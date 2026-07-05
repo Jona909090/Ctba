@@ -157,8 +157,9 @@ body{
 .spread.cover{ cursor: pointer; }
 .cover-panel{
   width:100%; height:100%; position: relative;
-  background: radial-gradient(circle at 25% 12%, rgba(227,198,117,.10), transparent 40%),
-              linear-gradient(160deg, var(--ink-2) 0%, var(--ink-3) 55%, #08101c 100%);
+  background: radial-gradient(circle at 25% 12%, rgba(227,198,117,.14), transparent 45%),
+              linear-gradient(160deg, rgba(18,26,43,.55) 0%, rgba(8,16,28,.75) 100%),
+              url('images/cover-bg.jpg') center/cover no-repeat;
   border: 1px solid rgba(227,198,117,.16);
   display:flex; flex-direction: column; align-items:center; justify-content:center;
   text-align:center; gap: 14px; padding: 40px;
@@ -205,9 +206,9 @@ body{
 .dark-photo{ background: var(--ink-2); padding: 0; position: relative; }
 .photo-plate{ position:absolute; inset:0; overflow:hidden; }
 .plate-tint{ position:absolute; inset:0; background: linear-gradient(180deg, rgba(12,18,30,.15), rgba(12,18,30,.75)); }
-.skyline-plate{ background: linear-gradient(160deg,#1a2740,#0c1420 70%); }
-.portrait-plate{ background: linear-gradient(200deg,#22304c,#0c1420 75%); }
-.zagreb-plate{ background: linear-gradient(180deg,#2a3b58,#0c1420 80%); }
+.skyline-plate{ background: linear-gradient(160deg,rgba(26,39,64,.35),rgba(12,20,32,.78) 80%), url('images/welcome-bg.jpg') center/cover no-repeat; }
+.portrait-plate{ background: linear-gradient(200deg,rgba(34,48,76,.3),rgba(12,20,32,.7) 85%), url('images/portrait.jpg') center/cover no-repeat; }
+.zagreb-plate{ background: linear-gradient(180deg,rgba(42,59,88,.25),rgba(12,20,32,.8) 80%), url('images/zagreb.jpg') center/cover no-repeat; }
 
 .plate-quote{
   position: absolute; right: 30px; bottom: 34px; max-width: 260px;
@@ -252,8 +253,10 @@ body{
    PROJECT ELEMENTS (Qatar / UAE pages)
    ============================================================ */
 .mini-plate{ width:100%; height: 110px; border-radius: var(--radius); position: relative; overflow:hidden; margin: 2px 0; }
-.airport-plate{ background: linear-gradient(135deg,#324158,#0c1420); }
-.metro-plate{ background: linear-gradient(135deg,#3a2f14,#0c1420); }
+.airport-plate{ background: linear-gradient(135deg,rgba(50,65,88,.15),rgba(12,20,32,.55)), url('images/airport.jpg') center/cover no-repeat; }
+.metro-plate{ background: linear-gradient(135deg,rgba(58,47,20,.15),rgba(12,20,32,.55)), url('images/metro.jpg') center/cover no-repeat; }
+.dubai-plate{ background: url('images/dubai.jpg') center/cover no-repeat; }
+.atlantis-plate{ height: 100px; margin-bottom: 8px; background: url('images/atlantis.jpg') center/cover no-repeat; }
 
 .meta-grid{ display:flex; flex-direction: column; gap: 6px; margin-top: 4px; }
 .meta-grid div{ font-size: 12.5px; color: var(--text-ink); display:flex; gap: 6px; }
@@ -267,13 +270,13 @@ body{
 .project-row h3{ font-family: var(--font-display); font-size: 14.5px; margin: 0 0 2px; color: var(--ink-2); }
 .project-row p{ font-size: 12px; color: var(--text-muted); margin: 3px 0 0; line-height: 1.5; }
 
-.pearl-plate{ background: linear-gradient(135deg,#2b4356,#0c1420); }
-.petroleum-plate{ background: linear-gradient(135deg,#3d3517,#0c1420); }
-.sidra-plate{ background: linear-gradient(135deg,#1c4a4a,#0c1420); }
-.jbh-plate{ background: linear-gradient(135deg,#3a2f45,#0c1420); }
-.adia-plate{ background: linear-gradient(135deg,#324158,#0c1420); }
-.galleria-plate{ background: linear-gradient(135deg,#40361a,#0c1420); }
-.beachbar-plate{ background: linear-gradient(135deg,#4a2f22,#0c1420); }
+.pearl-plate{ background: url('images/pearl.jpg') center/cover no-repeat; }
+.petroleum-plate{ background: url('images/petroleum.jpg') center/cover no-repeat; }
+.sidra-plate{ background: url('images/sidra.jpg') center/cover no-repeat; }
+.jbh-plate{ background: url('images/jumeirah.jpg') center/cover no-repeat; }
+.adia-plate{ background: url('images/adia.jpg') center/cover no-repeat; }
+.galleria-plate{ background: url('images/galleria.jpg') center/cover no-repeat; }
+.beachbar-plate{ background: url('images/beachbar.jpg') center/cover no-repeat; }
 
 .stat-strip{ display:flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
 .stat-strip div{ font-size: 11px; text-align:center; color: var(--text-muted); }
