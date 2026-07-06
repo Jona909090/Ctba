@@ -156,14 +156,18 @@ body{
    ============================================================ */
 .spread.cover{ cursor: pointer; }
 .cover-panel{
-  width:100%; height:100%; position: relative;
-  background: radial-gradient(circle at 25% 12%, rgba(227,198,117,.14), transparent 45%),
-              linear-gradient(160deg, rgba(18,26,43,.55) 0%, rgba(8,16,28,.75) 100%),
-              url('images/cover-bg.jpg') center/cover no-repeat;
-  border: 1px solid rgba(227,198,117,.16);
-  display:flex; flex-direction: column; align-items:center; justify-content:center;
-  text-align:center; gap: 14px; padding: 40px;
-  overflow: hidden;
+    width:100%;
+    height:100%;
+    position:relative;
+    background:url('images/cover-bg.jpg') center center / cover no-repeat;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:40px;
+    overflow:hidden;
+}
 }
 .cover-panel::before{
   content:''; position:absolute; inset: 16px; border: 1px solid rgba(227,198,117,.24); pointer-events:none;
