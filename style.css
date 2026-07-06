@@ -354,3 +354,25 @@ body{
 }
 
 @media (prefers-reduced-motion: reduce){ .spread{ transition: opacity .3s ease !important; } }
+.hero-page{
+    width:100vw;
+    height:100vh;
+}
+
+.hero-page .cover-panel{
+    border:none;
+    background:url('images/cover-bg.jpg') center center/cover no-repeat;
+}
+
+.hero-page .cover-panel::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    border:none;
+}
+
+.hero-page > *{
+    position:relative;
+    z-index:2;
+}
