@@ -305,7 +305,7 @@ body{
    CERTIFICATE / CONTACT
    ============================================================ */
 .certificate{ position: relative; align-items: flex-start; }
-.cert-logo{ font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--ink-2); letter-spacing: .02em; }
+.cert-logo{ font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--ink-2); letter-spacing: .02em; } 
 .cert-seal{
   position:absolute; bottom: 20px; right: 10px; width: 68px; height: 68px; border-radius:50%;
   border: 2px solid var(--gold); display:flex; align-items:center; justify-content:center;
