@@ -360,7 +360,7 @@ background: transparent;
 
 .hero-page .cover-panel{
     border:none;
-  background:url('cover-bg.jpg') center center/cover no-repeat;
+    background: transparent;
 }
 
 .hero-page .cover-panel::before{
