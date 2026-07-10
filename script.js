@@ -18,7 +18,7 @@
     spreads.forEach((el, i) => {
       if (i === current) {
         el.dataset.state = 'current';
-      } else if (direction === 'fwd' && i === current - 1) {
+      } else if (direction === 'fwd' && i === current - 1) { 
         el.dataset.state = 'turning-out-fwd';
       } else if (direction === 'back' && i === current + 1) {
         el.dataset.state = 'turning-out-back';
