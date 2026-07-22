@@ -1,104 +1,120 @@
-(function () {
-  const spreads = Array.from(document.querySelectorAll('.spread'));
-  const total = spreads.length;
-  const dots = Array.from(document.querySelectorAll('.dot'));
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const pageNow = document.getElementById('pageNow');
-  const pageTotal = document.getElementById('pageTotal');
-  const bookEl = document.getElementById('book');
+(() => {
+  const book = document.getElementById('book');
+  const sheets = [...document.querySelectorAll('.sheet')];
+  const prevButton = document.getElementById('prevButton');
+  const nextButton = document.getElementById('nextButton');
+  const leftZone = document.getElementById('pageZoneLeft');
+  const rightZone = document.getElementById('pageZoneRight');
+  const openBook = document.getElementById('openBook');
+  const currentPage = document.getElementById('currentPage');
+  const totalPages = document.getElementById('totalPages');
+  const progressBar = document.getElementById('progressBar');
+  const pageStatus = document.getElementById('pageStatus');
+  const fullscreenButton = document.getElementById('fullscreenButton');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let current = 0;
-  let animating = false;
-  const ANIM_MS = 680;
+  let index = 0;
+  let moving = false;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let lastWheelAt = 0;
 
-  pageTotal.textContent = total;
+  const twoDigits = value => String(value).padStart(2, '0');
 
-  function applyStates(direction) {
-    spreads.forEach((el, i) => {
-      if (i === current) {
-        el.dataset.state = 'current';
-      } else if (direction === 'fwd' && i === current - 1) { 
-        el.dataset.state = 'turning-out-fwd';
-      } else if (direction === 'back' && i === current + 1) {
-        el.dataset.state = 'turning-out-back';
-      } else if (i === current + 1) {
-        el.dataset.state = 'waiting-fwd';
-      } else if (i === current - 1) {
-        el.dataset.state = 'waiting-back';
-      } else {
-        el.dataset.state = 'hidden';
-      }
-    });
+  function updateInterface() {
+    const pageNumber = index + 1;
+    currentPage.textContent = twoDigits(pageNumber);
+    totalPages.textContent = twoDigits(sheets.length);
+    progressBar.style.width = `${(pageNumber / sheets.length) * 100}%`;
+    prevButton.disabled = index === 0;
+    nextButton.disabled = index === sheets.length - 1;
+    leftZone.disabled = index === 0;
+    rightZone.disabled = index === sheets.length - 1;
+    book.classList.toggle('is-open', index > 0);
+    pageStatus.textContent = `Stranica ${pageNumber} od ${sheets.length}: ${sheets[index].getAttribute('aria-label')}`;
   }
 
-  function updateChrome() {
-    dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
-    pageNow.textContent = current + 1;
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === total - 1;
+  function cleanSheet(sheet) {
+    sheet.classList.remove('is-active', 'turn-out-next', 'turn-in-next', 'turn-out-prev', 'turn-in-prev');
   }
 
-  function goTo(index, direction) {
-    if (index < 0 || index > total - 1 || index === current || animating) return;
-    animating = true;
-    current = index;
-    applyStates(direction);
-    updateChrome();
-    window.setTimeout(() => { animating = false; }, ANIM_MS);
+  function goTo(nextIndex) {
+    if (moving || nextIndex === index || nextIndex < 0 || nextIndex >= sheets.length) return;
+    moving = true;
+
+    const oldIndex = index;
+    const direction = nextIndex > oldIndex ? 'next' : 'prev';
+    const outgoing = sheets[oldIndex];
+    const incoming = sheets[nextIndex];
+
+    cleanSheet(incoming);
+    incoming.classList.add(direction === 'next' ? 'turn-in-next' : 'turn-in-prev');
+    outgoing.classList.remove('is-active');
+    outgoing.classList.add(direction === 'next' ? 'turn-out-next' : 'turn-out-prev');
+    index = nextIndex;
+    updateInterface();
+
+    const finish = () => {
+      cleanSheet(outgoing);
+      cleanSheet(incoming);
+      incoming.classList.add('is-active');
+      moving = false;
+    };
+
+    if (reducedMotion) finish();
+    else setTimeout(finish, 800);
   }
 
-  function next() { if (current < total - 1) goTo(current + 1, 'fwd'); }
-  function prev() { if (current > 0) goTo(current - 1, 'back'); }
+  const next = () => goTo(index + 1);
+  const previous = () => goTo(index - 1);
 
-  applyStates(null);
-  updateChrome();
+  nextButton.addEventListener('click', next);
+  rightZone.addEventListener('click', next);
+  openBook.addEventListener('click', next);
+  prevButton.addEventListener('click', previous);
+  leftZone.addEventListener('click', previous);
 
-  nextBtn.addEventListener('click', next);
-  prevBtn.addEventListener('click', prev);
-
-  dots.forEach((dot) => {
-    dot.addEventListener('click', () => {
-      const target = parseInt(dot.dataset.goto, 10);
-      if (target === current) return;
-      goTo(target, target > current ? 'fwd' : 'back');
-    });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'ArrowRight' || event.key === 'PageDown' || event.key === ' ') {
+      event.preventDefault();
+      next();
+    }
+    if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+      event.preventDefault();
+      previous();
+    }
+    if (event.key === 'Home') goTo(0);
+    if (event.key === 'End') goTo(sheets.length - 1);
   });
 
-  document.querySelectorAll('[data-goto]:not(.dot)').forEach((el) => {
-    el.addEventListener('click', () => {
-      const target = parseInt(el.dataset.goto, 10);
-      if (Number.isNaN(target) || target === current) return;
-      goTo(target, target > current ? 'fwd' : 'back');
-    });
-  });
-
-  document.querySelector('.spread.cover').addEventListener('click', (e) => {
-    if (e.target.closest('.open-btn') || !e.target.closest('.open-btn')) next();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') next();
-    if (e.key === 'ArrowLeft') prev();
-  });
-
-  let touchStartX = null;
-  bookEl.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  bookEl.addEventListener('touchend', (e) => {
-    if (touchStartX === null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); }
-    touchStartX = null;
+  book.addEventListener('touchstart', event => {
+    touchStartX = event.changedTouches[0].clientX;
+    touchStartY = event.changedTouches[0].clientY;
   }, { passive: true });
 
-  const form = document.getElementById('contactForm');
-  const note = document.getElementById('formNote');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      note.textContent = 'Hvala! Poruka je zabilježena (demo forma, bez pravog slanja).';
-      form.reset();
-      window.setTimeout(() => { note.textContent = ''; }, 4000);
-    });
-  }
+  book.addEventListener('touchend', event => {
+    const deltaX = event.changedTouches[0].clientX - touchStartX;
+    const deltaY = event.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      deltaX < 0 ? next() : previous();
+    }
+  }, { passive: true });
+
+  window.addEventListener('wheel', event => {
+    const now = Date.now();
+    if (now - lastWheelAt < 900 || Math.abs(event.deltaY) < 18) return;
+    lastWheelAt = now;
+    event.deltaY > 0 ? next() : previous();
+  }, { passive: true });
+
+  fullscreenButton.addEventListener('click', async () => {
+    try {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch (_) {
+      // Fullscreen nije dostupan u svakom ugrađenom pregledniku.
+    }
+  });
+
+  updateInterface();
 })();
