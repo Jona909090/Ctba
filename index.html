@@ -1,364 +1,78 @@
 <!DOCTYPE html>
 <html lang="hr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stefan Jonić — Site Supervisor Portfolio</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080706">
+  <title>Stefan Jonić — Profesionalni portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main class="portfolio" aria-label="Profesionalni portfolio Stefana Jonića">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Stefan Jonić</span>
+      </div>
+      <button class="fullscreen-button" id="fullscreenButton" type="button" aria-label="Prikaži preko cijelog ekrana" title="Cijeli ekran">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+      </button>
+    </header>
 
-<div class="room">
-  <div class="glow"></div>
+    <section class="book-stage" aria-label="Digitalna knjiga">
+      <div class="book" id="book">
+        <div class="book-shadow" aria-hidden="true"></div>
 
-  <div class="progress-track">
-    <span class="progress-label">poglavlje</span>
-    <div class="progress-dots">
-      <button class="dot" data-goto="0" aria-label="Naslovnica"></button>
-      <button class="dot" data-goto="1" aria-label="Dobro došli"></button>
-      <button class="dot" data-goto="2" aria-label="Ko sam ja"></button>
-      <button class="dot" data-goto="3" aria-label="Put oko svijeta"></button>
-      <button class="dot" data-goto="4" aria-label="Qatar I"></button>
-      <button class="dot" data-goto="5" aria-label="Qatar II"></button>
-      <button class="dot" data-goto="6" aria-label="UAE"></button>
-      <button class="dot" data-goto="7" aria-label="Hrvatska"></button>
-      <button class="dot" data-goto="8" aria-label="Zahvalnica"></button>
-    </div>
-  </div>
+        <article class="sheet is-active" data-page="0" aria-label="Naslovnica">
+          <img src="images/pages/01-naslovnica.jpg" alt="Naslovnica profesionalnog portfolija Stefana Jonića" draggable="false">
+          <button class="open-hotspot" id="openBook" type="button" aria-label="Otvori knjigu"></button>
+        </article>
+        <article class="sheet" data-page="1" aria-label="Dobro došli">
+          <img src="images/pages/02-dobro-dosli.jpg" alt="Dobro došli u moj profesionalni portfolio" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="2" aria-label="Ko sam ja">
+          <img src="images/pages/03-ko-sam-ja.jpg" alt="Ko sam ja — Stefan Jonić" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="3" aria-label="Put oko svijeta">
+          <img src="images/pages/04-put-oko-svijeta.jpg" alt="Profesionalni put kroz Katar, UAE i Hrvatsku" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="4" aria-label="Projekti u Kataru">
+          <img src="images/pages/05-qatar-projekti.jpg" alt="Projekti u Kataru" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="5" aria-label="Iskustvo u Kataru">
+          <img src="images/pages/06-qatar-iskustvo.jpg" alt="Profesionalno iskustvo u Kataru" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="6" aria-label="Projekti u Ujedinjenim Arapskim Emiratima">
+          <img src="images/pages/07-uae.jpg" alt="Projekti u Ujedinjenim Arapskim Emiratima" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="7" aria-label="Projekti u Hrvatskoj">
+          <img src="images/pages/08-hrvatska.jpg" alt="Projekti u Zagrebu i okolici" loading="lazy" draggable="false">
+        </article>
+        <article class="sheet" data-page="8" aria-label="Zahvalnica">
+          <img src="images/pages/09-zahvalnica.jpg" alt="Zahvalnica tvrtki CTBA" loading="lazy" draggable="false">
+        </article>
 
-  <div class="book" id="book">
-
-    <!-- 0 :: NASLOVNICA -->
-    <section class="spread cover hero-page" data-index="0">
-      <div class="cover-panel">
-        <div class="cover-bg-skyline"></div>
-        <span class="crane-mark" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none"><path d="M10 42V10M10 10H34M34 10V6M28 10L40 4M6 42H30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </span>
-        <span class="cover-eyebrow">16+ godina iskustva u građevinskoj industriji</span>
-        <h1 class="cover-title">STEFAN<br>JONIĆ</h1>
-        <span class="cover-role">Site Supervisor</span>
-        <div class="cover-countries">
-          <span>QATAR</span><i></i><span>UAE</span><i></i><span>CROATIA</span>
-        </div>
-        <div class="cover-quote">
-          <p><strong>Dobro došli</strong><br>
-          Dobrodošli u moj profesionalni portfolio. Ovdje ćete pronaći pregled mog iskustva, projekata i vrijednosti koje donosim na svako gradilište. Okrenite stranicu i krenite na put kroz godine predanog rada, izazova i velikih uspjeha.</p>
-        </div>
-        <button class="btn btn-gold open-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 6C10 4.5 6 4 3 4.5V19c3-.6 7-.2 9 1.2M12 6c2-1.5 6-2 9-1.5V19c-3-.6-7-.2-9 1.2M12 6v14.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Otvori knjigu <span>→</span>
-        </button>
-        <p class="cover-hint">Klikni, koristi tipke ili scroll za nastavak</p>
+        <button class="page-zone page-zone-left" id="pageZoneLeft" type="button" aria-label="Prethodna stranica"></button>
+        <button class="page-zone page-zone-right" id="pageZoneRight" type="button" aria-label="Sljedeća stranica"></button>
       </div>
     </section>
 
-    <!-- 1 :: DOBRO DOŠLI -->
-    <section class="spread" data-index="1">
-      <div class="page page-left">
-        <div class="page-inner">
-          <span class="chapter-mark">16+ godina iskustva u građevinskoj industriji</span>
-          <h2 class="page-title xl">Dobro došli<br><small>u moj profesionalni portfolio</small></h2>
-          <p class="body-text">Tokom posljednjih 16+ godina imao sam priliku raditi na nekim od najvećih i najzahtjevnijih građevinskih projekata u Kataru, Ujedinjenim Arapskim Emiratima i Hrvatskoj.</p>
-          <p class="body-text">Svaki projekat donosi novu priču, nove izazove i vrijednosti koje gradimo zajedno.</p>
-          <p class="body-text">Pozivam Vas da okrenete sljedeću stranicu i upoznate moj put, projekte i iskustva koja stoje iza svakog uspješno završenog gradilišta.</p>
-          <p class="signature">Stefan Jonić</p>
-        </div>
-        <span class="folio">01</span>
+    <nav class="controls" aria-label="Navigacija knjige">
+      <button class="nav-button" id="prevButton" type="button" aria-label="Prethodna stranica">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <div class="progress">
+        <span id="currentPage">01</span>
+        <div class="progress-track"><span id="progressBar"></span></div>
+        <span id="totalPages">09</span>
       </div>
-      <div class="page page-right dark-photo">
-        <div class="photo-plate skyline-plate">
-          <div class="plate-tint"></div>
-          <blockquote class="plate-quote">
-            <span class="quote-mark">“</span>
-            Gradimo više od objekata — gradimo povjerenje.
-          </blockquote>
-        </div>
-        <span class="folio light">02</span>
-      </div>
-    </section>
-
-    <!-- 2 :: KO SAM JA -->
-    <section class="spread" data-index="2">
-      <div class="page page-left">
-        <div class="page-inner">
-          <span class="chapter-mark">Poglavlje 2</span>
-          <h2 class="page-title">Ko sam ja</h2>
-          <p class="body-text">Moje ime je <strong>Stefan Jonić</strong>.</p>
-          <p class="body-text">Više od <strong>16 godina</strong> gradim objekte koji ostaju generacijama.</p>
-          <p class="body-text">Radio sam na međunarodnim projektima u Kataru, Ujedinjenim Arapskim Emiratima i Hrvatskoj, gdje sam stekao iskustvo u vođenju gradilišta, organizaciji timova i koordinaciji kompleksnih građevinskih radova.</p>
-          <p class="body-text">Vjerujem da se uspješan projekt ne gradi samo od betona i čelika, već od <strong>odgovornosti, znanja i ljudi</strong> koji zajedno rade prema istom cilju.</p>
-          <div class="signature-block">
-            <p class="signature">Stefan Jonić</p>
-            <span class="signature-role">Site Supervisor</span>
-          </div>
-        </div>
-        <span class="folio">03</span>
-      </div>
-      <div class="page page-right dark-photo">
-        <div class="photo-plate portrait-plate">
-          <div class="plate-tint"></div>
-          <div class="hardhat-icon">⛑</div>
-        </div>
-        <aside class="stat-rail">
-          <div class="stat-item"><strong>16+</strong><span>godina iskustva</span></div>
-          <div class="stat-item"><strong>QATAR</strong><span>lokacija</span></div>
-          <div class="stat-item"><strong>UAE</strong><span>lokacija</span></div>
-          <div class="stat-item"><strong>CROATIA</strong><span>lokacija</span></div>
-          <div class="stat-item"><strong>100+</strong><span>završenih projekata</span></div>
-        </aside>
-        <span class="folio light">04</span>
-      </div>
-    </section>
-
-    <!-- 3 :: PUT OKO SVIJETA -->
-    <section class="spread" data-index="3">
-      <div class="page page-left">
-        <div class="page-inner">
-          <span class="chapter-mark">Poglavlje 3</span>
-          <h2 class="page-title">Put oko<br>svijeta</h2>
-          <p class="body-text">Od Bliskog Istoka do Europe, svaka destinacija je donijela novo iskustvo, nove izazove i projekte koji mijenjaju budućnost.</p>
-          <ul class="fact-list">
-            <li><strong>3</strong> države</li>
-            <li><strong>115+</strong> projekata</li>
-            <li><strong>16+</strong> godina iskustva</li>
-            <li>Međunarodno iskustvo</li>
-          </ul>
-          <blockquote class="inline-quote">Svaki projekt je nova priča, novi izazov i nova prilika da ostavimo nešto vrijedno iza sebe.</blockquote>
-        </div>
-        <span class="folio">05</span>
-      </div>
-      <div class="page page-right">
-        <div class="page-inner">
-          <div class="country-card country-qatar">
-            <span class="flag-dot"></span>
-            <h3>Qatar</h3>
-            <strong>100+</strong> projekata
-            <p>Infrastruktura, stadioni, bolnice, metro sistemi, poslovni i stambeni kompleksi.</p>
-          </div>
-          <div class="country-card country-uae">
-            <span class="flag-dot"></span>
-            <h3>UAE</h3>
-            <strong>5+</strong> projekata
-            <p>Međunarodni aerodromi, luksuzni resorti i poslovni objekti.</p>
-          </div>
-          <div class="country-card country-hr">
-            <span class="flag-dot"></span>
-            <h3>Hrvatska</h3>
-            <strong>10+</strong> projekata
-            <p>Obnova stambenih objekata, industrijski pogoni i specijalizirani projekti.</p>
-          </div>
-        </div>
-        <span class="folio">06</span>
-      </div>
-    </section>
-
-    <!-- 4 :: QATAR I -->
-    <section class="spread accent-qatar" data-index="4">
-      <div class="page page-left">
-        <div class="page-inner">
-          <span class="chapter-mark">Poglavlje 4 · Qatar</span>
-          <h2 class="page-title">Hamad International<br>Airport</h2>
-          <span class="loc-tag">Doha, Qatar</span>
-          <div class="photo-plate mini-plate airport-plate"><div class="plate-tint"></div></div>
-          <p class="body-text">Jedan od najboljih aerodroma u svijetu, projektiran za prihvat više od 50 milijuna putnika godišnje.</p>
-          <div class="meta-grid">
-            <div><span>Period</span>2010 – 2018</div>
-            <div><span>Uloga</span>Site Supervisor</div>
-            <div><span>Opseg</span>Putnički terminali, koncourse, airside infrastruktura i pratećI objekti</div>
-          </div>
-        </div>
-        <span class="folio">07</span>
-      </div>
-      <div class="page page-right">
-        <div class="page-inner">
-          <h2 class="page-title">Doha Metro</h2>
-          <span class="loc-tag">Doha, Qatar</span>
-          <div class="photo-plate mini-plate metro-plate"><div class="plate-tint"></div></div>
-          <p class="body-text">Moderna metro mreža koja povezuje ključne destinacije u Dohi vrhunskim stanicama i infrastrukturom.</p>
-          <div class="meta-grid">
-            <div><span>Period</span>2012 – 2019</div>
-            <div><span>Uloga</span>Site Supervisor</div>
-            <div><span>Opseg</span>Podzemne stanice, tuneli, elevated pruge i svi pratećI radovi</div>
-          </div>
-        </div>
-        <span class="folio">08</span>
-      </div>
-    </section>
-
-    <!-- 5 :: QATAR II -->
-    <section class="spread accent-qatar" data-index="5">
-      <div class="page page-left">
-        <div class="page-inner">
-          <h2 class="page-title">Ikonični projekti</h2>
-          <span class="loc-tag">Sport &amp; infrastruktura</span>
-          <div class="chip-grid">
-            <span class="chip">Lusail Stadium</span>
-            <span class="chip">Khalifa Int. Stadium</span>
-            <span class="chip">Al Wakrah Stadium</span>
-            <span class="chip">Sidra Medicine</span>
-            <span class="chip">Qatar Foundation HQ</span>
-            <span class="chip">Golden Bay Tower</span>
-            <span class="chip">Barwa City</span>
-            <span class="chip">Tornado Tower</span>
-            <span class="chip">Lusail Towers</span>
-          </div>
-          <p class="body-text">Ponosan sam što sam bio dio isporuke nekih od najprepoznatljivijih projekata u Kataru — od stadiona do stambenih i poslovnih landmarka.</p>
-        </div>
-        <span class="folio">09</span>
-      </div>
-      <div class="page page-right">
-        <div class="page-inner">
-          <div class="project-row">
-            <div class="project-row-plate pearl-plate"></div>
-            <div>
-              <h3>The Pearl Qatar</h3>
-              <span class="loc-tag">Doha · 2010–2018</span>
-              <p>Prestižno vještačko ostrvo s rezidencijalnim tornjevima, vilama, marinama i sadržajima.</p>
-            </div>
-          </div>
-          <div class="project-row">
-            <div class="project-row-plate petroleum-plate"></div>
-            <div>
-              <h3>Qatar Petroleum</h3>
-              <span class="loc-tag">Doha · 2009–2015</span>
-              <p>Objekti rafinerije uključujući procesne zgrade, pipelines i pratećU infrastrukturu.</p>
-            </div>
-          </div>
-          <div class="project-row">
-            <div class="project-row-plate sidra-plate"></div>
-            <div>
-              <h3>Sidra Medicine</h3>
-              <span class="loc-tag">Education City · 2013–2019</span>
-              <p>Bolnica i istraživački centar za žene i djecu, dio Education City mreže.</p>
-            </div>
-          </div>
-          <div class="stat-strip">
-            <div><strong>15+</strong>projekata</div>
-            <div><strong>16+</strong>godina</div>
-            <div><strong>Multi-sektor</strong>stručnost</div>
-          </div>
-        </div>
-        <span class="folio">10</span>
-      </div>
-    </section>
-
-    <!-- 6 :: UAE -->
-    <section class="spread accent-uae" data-index="6">
-      <div class="page page-left">
-        <div class="page-inner">
-          <span class="chapter-mark">Poglavlje 5 · UAE</span>
-          <h2 class="page-title">United Arab<br>Emirates</h2>
-          <div class="photo-plate mini-plate dubai-plate"><div class="plate-tint"></div></div>
-          <p class="body-text">Nakon uspješnih projekata u Kataru, profesionalni put nastavio se u Ujedinjenim Arapskim Emiratima, gdje sam učestvovao u realizaciji luksuznih hotela, aerodromske infrastrukture, trgovačkih centara i turističkih objekata svjetskog standarda.</p>
-          <div class="meta-grid">
-            <div><span>Lokacije</span>Dubai, Abu Dhabi</div>
-            <div><span>Projekata</span>5+</div>
-          </div>
-          <div class="feature-card">
-            <div class="photo-plate mini-plate atlantis-plate"><div class="plate-tint"></div></div>
-            <span class="stars">★★★★★</span>
-            <h3>Atlantis The Royal Dubai</h3>
-            <span class="loc-tag">Palm Jumeirah · 2019–2021</span>
-            <p>Vrhunac luksuza i arhitektonske inovacije — 795 soba i penthouse jedinica, vrhunski inženjerski sistemi i vrijednost projekta preko 1.4 milijarde USD.</p>
-          </div>
-        </div>
-        <span class="folio">11</span>
-      </div>
-      <div class="page page-right">
-        <div class="page-inner">
-          <h2 class="page-title">Projekti u UAE</h2>
-          <div class="project-row">
-            <div class="project-row-plate jbh-plate"></div>
-            <div><h3>Jumeirah Beach Hotel</h3><span class="loc-tag">Dubai · 2016–2017</span><p>Fit-out radovi na luksuznim sobama i zajedničkim prostorima.</p></div>
-          </div>
-          <div class="project-row">
-            <div class="project-row-plate adia-plate"></div>
-            <div><h3>Abu Dhabi Int. Airport</h3><span class="loc-tag">Abu Dhabi · 2017–2019</span><p>Radovi na novom terminalu, zemljanim radovima i putničkim zonama.</p></div>
-          </div>
-          <div class="project-row">
-            <div class="project-row-plate galleria-plate"></div>
-            <div><h3>Galleria Mall</h3><span class="loc-tag">Abu Dhabi · 2016–2018</span><p>Trgovački centar s preko 400 brendova — fit-out i zajednički prostori.</p></div>
-          </div>
-          <div class="project-row">
-            <div class="project-row-plate beachbar-plate"></div>
-            <div><h3>Beach Bar Dubai</h3><span class="loc-tag">Dubai · 2015–2016</span><p>Ekskluzivan beach bar s pogledom na Burj Al Arab.</p></div>
-          </div>
-        </div>
-        <span class="folio">12</span>
-      </div>
-    </section>
-
-    <!-- 7 :: HRVATSKA -->
-    <section class="spread accent-hr" data-index="7">
-      <div class="page page-left dark-photo">
-        <div class="photo-plate zagreb-plate">
-          <div class="plate-tint"></div>
-        </div>
-        <div class="page-inner over-photo">
-          <span class="chapter-mark light">Poglavlje 6 · Hrvatska</span>
-          <h2 class="page-title light">Zagreb<br><small>2023 – 2026</small></h2>
-          <p class="body-text light">Ponosan sam na projekte koji su realizirani u Zagrebu i okolici. Svaki projekt predstavlja predanost, kvalitetu i zajednički uspjeh.</p>
-        </div>
-        <span class="folio light">13</span>
-      </div>
-      <div class="page page-right">
-        <div class="page-inner">
-          <h2 class="page-title">Lokacije projekata</h2>
-          <ol class="hr-list">
-            <li><strong>01 · Vertiv – Rugvica</strong>Proizvodni pogon i data centar rješenja. Izrada i montaža modularnih jedinica.</li>
-            <li><strong>02 · Primorska 17, Zagreb</strong>Adaptacija i rekonstrukcija stambene zgrade. Unutarnji građevinski i završni radovi.</li>
-            <li><strong>03 · Vinkovićeva, Zagreb</strong>Adaptacija stambene zgrade. Kompletni unutarnji radovi.</li>
-            <li><strong>04 · Posilovićeva 11, Zagreb</strong>Rekonstrukcija i adaptacija. Građevinski i obrtnički radovi.</li>
-            <li><strong>05 · Trg kralja Tomislava 6</strong>Adaptacija poslovnog prostora. Unutarnji građevinski i završni radovi.</li>
-          </ol>
-        </div>
-        <span class="folio">14</span>
-      </div>
-    </section>
-
-    <!-- 8 :: ZAHVALNICA / KONTAKT -->
-    <section class="spread" data-index="8">
-      <div class="page page-left">
-        <div class="page-inner certificate">
-          <div class="cert-logo">CTBA</div>
-          <span class="chapter-mark">16+ godina povjerenja i suradnje</span>
-          <p class="body-text">Ovom zahvalnicom izražavam iskrenu zahvalnost tvrtki <strong>CTBA d.o.o.</strong> na ukazanom povjerenju, kontinuiranoj podršci i izvanrednoj suradnji tijekom više od 16 godina zajedničkog rada.</p>
-          <p class="body-text">Ponosan sam što sam dio tima koji svojim znanjem, predanošću i profesionalnošću ostvaruje vrhunske rezultate na zahtjevnim projektima diljem Hrvatske i inozemstva.</p>
-          <p class="body-text">Hvala na prilici, podršci i prijateljstvu.</p>
-          <p class="signature">Stefan Jonić</p>
-          <div class="cert-seal">16+</div>
-        </div>
-        <span class="folio">15</span>
-      </div>
-      <div class="page page-right">
-        <div class="page-inner">
-          <h2 class="page-title">Stupimo u kontakt</h2>
-          <p class="body-text">Otvoren za nove projekte, suradnje i profesionalne izazove — u Hrvatskoj i inozemstvu.</p>
-          <form class="contact-form" id="contactForm">
-            <label>Ime i prezime<input type="text" name="name" placeholder="Vaše ime" required></label>
-            <label>Email adresa<input type="email" name="email" placeholder="vas@email.com" required></label>
-            <label>Poruka<textarea name="message" rows="4" placeholder="Napišite poruku..." required></textarea></label>
-            <button type="submit" class="btn btn-gold btn-full">Pošalji poruku</button>
-            <p class="form-note" id="formNote"></p>
-          </form>
-          <button class="btn btn-outline-dark" data-goto="0">↺ Vrati se na naslovnicu</button>
-        </div>
-        <span class="folio">16</span>
-      </div>
-    </section>
-
-  </div>
-
-  <div class="controls">
-    <button id="prevBtn" class="nav-btn" aria-label="Prethodna stranica">‹</button>
-    <span class="page-indicator"><span id="pageNow">1</span> / <span id="pageTotal">9</span></span>
-    <button id="nextBtn" class="nav-btn" aria-label="Sljedeća stranica">›</button>
-  </div>
-</div>
-
-<script src="script.js"></script>
+      <button class="nav-button" id="nextButton" type="button" aria-label="Sljedeća stranica">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </nav>
+    <p class="hint">Klikni rub stranice, koristi strelice ili povuci prstom</p>
+    <div class="sr-status" id="pageStatus" aria-live="polite"></div>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
