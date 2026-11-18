@@ -86,33 +86,42 @@ $('download').onclick=async()=>{
   $('status').textContent='Excel izvještaj generisan u CTBA rasporedu.';
  }catch(e){$('status').textContent='Greška: '+e.message;}
 };
+
 $('downloadPdf').onclick=async()=>{
+ try{
+  if(!window.html2pdf)throw Error('PDF biblioteka nije učitana.');
+  if(!$('works').value.trim() && !$('notes').value.trim())parse();
+  const d=reportData();
+  if(d.works.length>38||d.notes.length>7)throw Error('Tekst premašuje originalni CTBA obrazac (38 redova radova i 7 redova bilješke). Skrati ili podijeli tekst.');
+  const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const page=document.createElement('div');
+  page.style.cssText='width:190mm;height:277mm;box-sizing:border-box;background:#fff;color:#000;font:10px Arial,sans-serif;padding:1mm 1mm;overflow:hidden;';
+  const td='border:1px solid #000;padding:1px 3px;box-sizing:border-box;';
+  let html='<table style="width:100%;height:100%;border-collapse:collapse;table-layout:fixed">';
+  html+='<tr style="height:20mm"><td colspan="3" style="'+td+'vertical-align:bottom;text-align:center;font-size:20px;font-weight:bold">CONSTRUCTION</td><td colspan="6" style="'+td+'"></td></tr>';
+  html+='<tr style="height:8mm"><td colspan="9" style="'+td+'font-size:20px;font-weight:bold;text-align:center">DNEVNI IZVJEŠTAJ</td></tr>';
+  html+='<tr style="height:5mm"><td colspan="9" style="'+td+'text-align:center;font-size:11px;font-weight:bold;font-style:italic">Ime projekta: ANAN Afula, VERTIV</td></tr>';
+  html+='<tr style="height:5mm"><td colspan="2" style="'+td+'text-align:center;font-weight:bold">Izvođač:</td><td colspan="3" style="'+td+'text-align:center">CTBA Construction d.o.o.</td><td colspan="1" style="'+td+'text-align:center">Date:</td><td colspan="3" style="'+td+'text-align:center">'+esc(d.date)+'</td></tr>';
+  html+='<tr style="height:5mm"><td colspan="2" style="'+td+'text-align:center;font-weight:bold">Lokacija:</td><td colspan="3" style="'+td+'text-align:center">Dugoselska ul. 21, 10370, Rugvica</td><td colspan="2" style="'+td+'"></td><td colspan="2" style="'+td+'text-align:center;font-weight:bold">Poslovođa:</td></tr>';
+  html+='<tr style="height:5mm"><td colspan="2" rowspan="3" style="'+td+'text-align:center;font-weight:bold;font-style:italic">Ukupan broj radnika</td><td colspan="3" rowspan="3" style="'+td+'text-align:center">'+esc(d.total)+'</td><td colspan="2" style="'+td+'"></td><td colspan="2" style="'+td+'text-align:center">Stefan Jonić</td></tr>';
+  html+='<tr style="height:5mm"><td colspan="2" style="'+td+'"></td><td colspan="2" rowspan="2" style="'+td+'"></td></tr>';
+  html+='<tr style="height:5mm"><td colspan="2" style="'+td+'"></td></tr>';
+  html+='<tr style="height:5mm"><td colspan="2" style="'+td+'text-align:center;font-weight:bold">Djelatnici</td><td colspan="3" style="'+td+'text-align:center">Ukupno</td><td colspan="2" style="'+td+'text-align:center">Dnevni rad</td><td colspan="2" style="'+td+'text-align:center">Noćni rad</td></tr>';
+  const rr=(label,num,time,strong=false)=>'<tr style="height:5mm"><td colspan="2" style="'+td+'text-align:center;'+(strong?'font-weight:bold':'')+'">'+label+'</td><td colspan="3" style="'+td+'text-align:center">'+esc(num)+'</td><td colspan="2" style="'+td+'text-align:center">'+time+'</td><td colspan="2" style="'+td+'"></td></tr>';
+  html+=rr('Nadzor',d.supervisors,'7:00')+rr('Radnik',d.workers,'17:00')+rr('Ukupno',d.total,'',true);
+  for(let k=0;k<38;k++)html+='<tr style="height:3.5mm"><td colspan="9" style="'+td+'font-size:9px;line-height:1;white-space:nowrap;overflow:hidden">'+esc(d.works[k]||'')+'</td></tr>';
+  html+='<tr style="height:4.5mm"><td colspan="9" style="'+td+'">Bilješka:</td></tr>';
+  for(let k=0;k<7;k++)html+='<tr style="height:3.5mm"><td colspan="9" style="'+td+'font-size:9px;line-height:1;white-space:nowrap;overflow:hidden">'+esc(d.notes[k]||'')+'</td></tr>';
+  html+='<tr style="height:9mm"><td colspan="9" style="'+td+'font-size:8px;text-align:center;font-weight:bold;font-style:italic">Ako se u roku od 24 sata nakon predaje i u pisanom obliku ne podnesu prigovori na ovo izvješće, tada se njegov sadržaj smatra prihvaćenim i odobrenim.</td></tr>';
+  html+='<tr style="height:4mm"><td colspan="9" style="'+td+'font-weight:bold;font-style:italic">BROJ STRANICE</td></tr></table>';
+  page.innerHTML=html;
+  const layer=document.createElement('div');layer.style.cssText='position:fixed;inset:0;z-index:99999;background:#e6e6e6;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:6px;';
+  layer.appendChild(page);document.body.appendChild(layer);
   try{
-    if(!window.html2pdf)throw Error('PDF biblioteka nije učitana. Provjeri internetsku vezu.');
-    if(!$('works').value.trim() && !$('notes').value.trim())parse();
-    const clean = v=>String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    const works=$('works').value.split('\n').filter(x=>x.trim());
-    const notes=$('notes').value.split('\n').filter(x=>x.trim());
-    const lines=arr=>arr.length?arr.map(x=>'<div style="border-bottom:1px solid #dae1e9;padding:7px 2px;line-height:1.35;break-inside:avoid;page-break-inside:avoid">'+clean(x)+'</div>').join(''):'<div style="height:24px;border-bottom:1px solid #dae1e9"></div>';
-    const paper=document.createElement('div');
-    paper.style.cssText='width:190mm;box-sizing:border-box;background:white;color:#1d293a;font:12px Arial,sans-serif;padding:10mm;';
-    paper.innerHTML=
-      '<div style="font-size:24px;font-weight:800;color:#26384f;padding-bottom:9px">CTBA CONSTRUCTION</div>'+
-      '<div style="background:#26384f;color:white;font-size:19px;font-weight:700;padding:12px">DNEVNI IZVJEŠTAJ</div>'+
-      '<div style="margin:15px 0 12px;line-height:1.8"><b>Ime projekta:</b> ANAN Afula, VERTIV<br><b>Izvođač:</b> CTBA Construction d.o.o.<br><b>Lokacija:</b> Dugoselska ul. 21, 10370, Rugvica<br><b>Datum:</b> '+clean($('date').value)+'<br><b>Poslovođa:</b> Stefan Jonić</div>'+
-      '<table style="width:100%;border-collapse:collapse;margin:8px 0 19px"><thead><tr style="background:#e5ebf3"><th style="padding:8px;text-align:left">Djelatnici</th><th>Ukupno</th><th>Dnevni rad</th><th>Noćni rad</th></tr></thead><tbody>'+
-      '<tr><td style="padding:8px;border-bottom:1px solid #ccd5df">Nadzor</td><td style="text-align:center;border-bottom:1px solid #ccd5df">'+clean($('supervisors').value)+'</td><td style="text-align:center;border-bottom:1px solid #ccd5df">07:00</td><td></td></tr>'+
-      '<tr><td style="padding:8px;border-bottom:1px solid #ccd5df">Radnik</td><td style="text-align:center;border-bottom:1px solid #ccd5df">'+clean($('workers').value)+'</td><td style="text-align:center;border-bottom:1px solid #ccd5df">17:00</td><td></td></tr>'+
-      '<tr><td style="padding:8px;border-bottom:1px solid #ccd5df"><b>Ukupno</b></td><td style="text-align:center;border-bottom:1px solid #ccd5df"><b>'+clean($('total').value)+'</b></td><td></td><td></td></tr></tbody></table>'+
-      '<div style="background:#26384f;color:#fff;font-weight:bold;padding:10px;margin-top:12px;break-after:avoid">OPIS IZVEDENIH RADOVA</div>'+lines(works)+
-      '<div style="background:#26384f;color:#fff;font-weight:bold;padding:10px;margin-top:20px;break-after:avoid">BILJEŠKA / VTR</div>'+lines(notes)+
-      '<p style="font-size:10px;color:#526171;margin-top:35px;line-height:1.5">Ako se u roku od 24 sata nakon predaje i u pisanom obliku ne podnesu prigovori, smatra se da je izvještaj prihvaćen.</p>';
-    const previewLayer=document.createElement('div');previewLayer.style.cssText='position:fixed;inset:0;z-index:99999;background:#e6e6e6;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:8px;';paper.style.cssText+='position:relative;left:auto;top:auto;margin:0 auto;max-width:100%;';previewLayer.appendChild(paper);document.body.appendChild(previewLayer);
-    try{
-      $('status').textContent='Izrađujem PDF dokument...';
-      await html2pdf().set({margin:5,filename:'CTBA_Dnevni_izvjestaj_'+($('date').value.replace(/\./g,'-')||'novi')+'.pdf',image:{type:'jpeg',quality:0.97},html2canvas:{scale:2,scrollY:0,windowWidth:1024},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(paper).save();
-      $('status').textContent='PDF dokument je generisan. Potraži ga u preuzetim datotekama.';
-    }finally{previewLayer.remove();}
-  }catch(e){$('status').textContent='Greška pri izradi PDF-a: '+e.message;}
+   $('status').textContent='Izrađujem PDF u CTBA formi...';
+   await html2pdf().set({margin:8,filename:'CTBA_Dnevni_izvjestaj_'+(d.date.replace(/\./g,'-')||'novi')+'.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,scrollY:0},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:'avoid-all'}}).from(page).save();
+   $('status').textContent='PDF spremljen u CTBA rasporedu.';
+  }finally{layer.remove();}
+ }catch(e){$('status').textContent='Greška: '+e.message}
 };
 </script></body></html>
