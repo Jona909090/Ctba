@@ -1,10 +1,91 @@
-<!doctype html><html lang="sr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CTBA Generator dnevnih izvještaja</title><script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script><style>:root{font-family:Arial,sans-serif;color:#ecf1fb;background:#101725}*{box-sizing:border-box}body{margin:0}.wrap{max-width:740px;margin:auto;padding:22px 16px 60px}.brand{display:flex;gap:12px;align-items:center;margin:15px 0 28px}.logo{background:#e9b453;color:#1b2432;padding:13px;border-radius:13px;font-weight:900}.panel{background:#1d293a;border:1px solid #334359;border-radius:18px;padding:20px;margin:16px 0}h1{font-size:26px;margin:0}h2{font-size:18px;margin:0 0 14px}p{color:#b7c4d6;line-height:1.5}textarea,input{width:100%;background:#111b29;border:1px solid #45546a;color:white;padding:13px;border-radius:10px;font:inherit}textarea{min-height:230px;resize:vertical}label{display:block;color:#d2dceb;font-size:13px;margin:13px 0 6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:12px;padding:15px;font-size:16px;font-weight:800;background:#e9b453;color:#182033;width:100%;margin-top:14px;cursor:pointer}.alt{background:#2c3d55;color:white}.stat{color:#a8dcb8;margin-top:9px;white-space:pre-wrap}.small{font-size:13px;color:#9ca9bc}.muted{color:#aab6c8}@media(max-width:520px){.grid{grid-template-columns:1fr}.panel{padding:16px}}</style><script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script></head><body><div class="wrap"><div class="brand"><span class="logo">CTBA</span><div><h1>Generator izvještaja</h1><div class="small">Dnevni izvještaji • VERTIV • Excel</div></div></div><section class="panel"><h2>1. Zalijepi dnevni izvještaj</h2><p>Kopiraj tekst iz WhatsApp-a, bez mijenjanja redoslijeda radova. VTR se automatski izdvaja u bilješku.</p><textarea id="src" placeholder="02.11.2026.&#10;5 radnika + 1 poslovođa&#10;MV-10 ...&#10;VTR ..."></textarea><button class="btn alt" id="parse">Prepoznaj podatke</button></section><section class="panel"><h2>2. Provjeri podatke</h2><div class="grid"><div><label>Datum (dd.mm.gggg.)</label><input id="date" placeholder="02.11.2026."></div><div><label>Broj radnika</label><input id="workers" inputmode="numeric"></div><div><label>Poslovođe / nadzor</label><input id="supervisors" inputmode="numeric" value="1"></div><div><label>Ukupno</label><input id="total" inputmode="numeric"></div></div><label>Izvedeni radovi (jedan red po opisu)</label><textarea id="works" style="min-height:200px"></textarea><label>Bilješka / VTR</label><textarea id="notes" style="min-height:110px"></textarea><button class="btn" id="download">Generiši CTBA Excel</button><button class="btn alt" id="downloadPdf" type="button">Generiši CTBA PDF</button><div id="status" class="stat"></div><p class="small">Podaci se obrađuju u tvom pregledniku. Provjeri broj radnika i sadržaj prije preuzimanja.</p></section></div><script>
+<!doctype html><html lang="sr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CTBA Generator dnevnih izvještaja</title><script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script><style>:root{font-family:Arial,sans-serif;color:#ecf1fb;background:#101725}*{box-sizing:border-box}body{margin:0}.wrap{max-width:740px;margin:auto;padding:22px 16px 60px}.brand{display:flex;gap:12px;align-items:center;margin:15px 0 28px}.logo{background:#e9b453;color:#1b2432;padding:13px;border-radius:13px;font-weight:900}.panel{background:#1d293a;border:1px solid #334359;border-radius:18px;padding:20px;margin:16px 0}h1{font-size:26px;margin:0}h2{font-size:18px;margin:0 0 14px}p{color:#b7c4d6;line-height:1.5}textarea,input{width:100%;background:#111b29;border:1px solid #45546a;color:white;padding:13px;border-radius:10px;font:inherit}textarea{min-height:230px;resize:vertical}label{display:block;color:#d2dceb;font-size:13px;margin:13px 0 6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:12px;padding:15px;font-size:16px;font-weight:800;background:#e9b453;color:#182033;width:100%;margin-top:14px;cursor:pointer}.alt{background:#2c3d55;color:white}.stat{color:#a8dcb8;margin-top:9px;white-space:pre-wrap}.small{font-size:13px;color:#9ca9bc}.muted{color:#aab6c8}@media(max-width:520px){.grid{grid-template-columns:1fr}.panel{padding:16px}}</style><script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script></head><body><div class="wrap"><div class="brand"><span class="logo">CTBA</span><div><h1>Generator izvještaja</h1><div class="small">Dnevni izvještaji • VERTIV • Excel</div></div></div><section class="panel"><h2>1. Zalijepi dnevni izvještaj</h2><p>Kopiraj tekst iz WhatsApp-a, bez mijenjanja redoslijeda radova. VTR se automatski izdvaja u bilješku.</p><textarea id="src" placeholder="02.11.2026.&#10;5 radnika + 1 poslovođa&#10;MV-10 ...&#10;VTR ..."></textarea><button class="btn alt" id="parse">Prepoznaj podatke</button></section><section class="panel"><h2>2. Provjeri podatke</h2><div class="grid"><div><label>Datum (dd.mm.gggg.)</label><input id="date" placeholder="02.11.2026."></div><div><label>Broj radnika</label><input id="workers" inputmode="numeric"></div><div><label>Poslovođe / nadzor</label><input id="supervisors" inputmode="numeric" value="1"></div><div><label>Ukupno</label><input id="total" inputmode="numeric"></div></div><label>Izvedeni radovi (jedan red po opisu)</label><textarea id="works" style="min-height:200px"></textarea><label>Bilješka / VTR</label><textarea id="notes" style="min-height:110px"></textarea><label for="templateFile">Originalna CTBA Excel forma (po želji učitaj jednom za potpuno isti obrazac)</label><input type="file" id="templateFile" accept=".xlsx" style="font-size:13px"><button class="btn" id="download">Generiši CTBA Excel</button><button class="btn alt" id="downloadPdf" type="button">Generiši CTBA PDF</button><div id="status" class="stat"></div><p class="small">Podaci se obrađuju u tvom pregledniku. Provjeri broj radnika i sadržaj prije preuzimanja.</p></section></div><script>
 const $=id=>document.getElementById(id);
 function parse(){let txt=$('src').value.trim();if(!txt){$('status').textContent='Prvo zalijepi dnevni izvještaj.';return;}let date=txt.match(/\b(\d{1,2})[.\/-](\d{1,2})[.\/-](20\d{2})\b/);if(date)$('date').value=date[1].padStart(2,'0')+'.'+date[2].padStart(2,'0')+'.'+date[3]+'.';let w=txt.match(/(\d+)\s*(?:radnika|radnik|radnici)/i),s=txt.match(/(\d+)\s*(?:poslovođ[aeu]|poslovodj[aeu]|nadzor)/i);if(w)$('workers').value=w[1];if(s)$('supervisors').value=s[1];if(w)$('total').value=Number(w[1])+Number(s?s[1]:$('supervisors').value||0);let lines=txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),note=[],works=[],isVtr=false;for(let line of lines){if(/^\s*(?:VTR|V\.T\.R\.)\b/i.test(line))isVtr=true;else if(/^\s*(?:MV[S]?[-–]?\d+)/i.test(line))isVtr=false;if(/^(?:\d{1,2}[.\/-]\d{1,2}[.\/-]20\d{2}|broj radnika|radnici|radnika|poslovođ|ukupno)/i.test(line)&&!line.match(/\bMV[S]?[-–]?\d+/i))continue;(isVtr?note:works).push(line)}$('works').value=works.join('\n');$('notes').value=note.join('\n');$('status').textContent='Podaci izdvojeni. Provjeri i preuzmi Excel.';}
 $('parse').onclick=parse;
 $('workers').addEventListener('input',recalc);$('supervisors').addEventListener('input',recalc);function recalc(){$('total').value=(Number($('workers').value)||0)+(Number($('supervisors').value)||0)}
-$('download').onclick=async()=>{try{if(!window.ExcelJS)throw Error('Biblioteka za Excel nije učitana. Provjeri internetsku vezu.');if(!$('works').value.trim()&&!$('notes').value.trim())parse();const wb=new ExcelJS.Workbook(),ws=wb.addWorksheet('CTBA Dnevni izvještaj',{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:1}});ws.columns=[{width:18},{width:18},{width:16},{width:16},{width:16},{width:17},{width:17},{width:15},{width:14}];ws.mergeCells('A1:I1');ws.getCell('A1').value='CTBA CONSTRUCTION';ws.getCell('A1').font={bold:true,size:22,color:{argb:'FF26384F'}};ws.getRow(1).height=35;ws.mergeCells('A2:I2');ws.getCell('A2').value='DNEVNI IZVJEŠTAJ';ws.getCell('A2').font={bold:true,size:17,color:{argb:'FFFFFFFF'}};ws.getCell('A2').fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF26384F'}};ws.getRow(2).height=30;ws.mergeCells('A3:I3');ws.getCell('A3').value='Ime projekta: ANAN Afula, VERTIV';ws.getCell('A4').value='Izvođač:';ws.getCell('C4').value='CTBA Construction d.o.o.';ws.getCell('F4').value='Datum:';ws.getCell('G4').value=$('date').value;ws.getCell('A5').value='Lokacija:';ws.getCell('C5').value='Dugoselska ul. 21, 10370, Rugvica';ws.getCell('H5').value='Poslovođa:';ws.getCell('H6').value='Stefan Jonić';ws.getCell('A6').value='Ukupan broj radnika';ws.getCell('C6').value=Number($('total').value)||0;ws.getCell('A9').value='Djelatnici';ws.getCell('C9').value='Ukupno';ws.getCell('F9').value='Dnevni rad';ws.getCell('H9').value='Noćni rad';ws.getCell('A10').value='Nadzor';ws.getCell('C10').value=Number($('supervisors').value)||0;ws.getCell('F10').value='07:00';ws.getCell('A11').value='Radnik';ws.getCell('C11').value=Number($('workers').value)||0;ws.getCell('F11').value='17:00';ws.getCell('A12').value='Ukupno';ws.getCell('C12').value=Number($('total').value)||0;for(let r=9;r<=12;r++){for(let c=1;c<=9;c++){let cell=ws.getCell(r,c);cell.border={bottom:{style:'thin',color:{argb:'FFCDD5DF'}}}}}for(let c=1;c<=9;c++){ws.getCell(9,c).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFE5EBF3'}};ws.getCell(9,c).font={bold:true}}ws.mergeCells('A14:I14');ws.getCell('A14').value='OPIS IZVEDENIH RADOVA';ws.getCell('A14').font={bold:true,color:{argb:'FFFFFFFF'}};ws.getCell('A14').fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF26384F'}};let items=$('works').value.split('\n').filter(x=>x.trim());let r=15;for(let item of items){ws.mergeCells(r,1,r,9);let cell=ws.getCell(r,1);cell.value=item;cell.alignment={wrapText:true,vertical:'middle'};cell.border={bottom:{style:'hair',color:{argb:'FFD6DEE8'}}};ws.getRow(r).height=Math.min(90,Math.max(25,Math.ceil(item.length/100)*17));r++}r=Math.max(r+1,30);ws.mergeCells(r,1,r,9);ws.getCell(r,1).value='BILJEŠKA / VTR';ws.getCell(r,1).font={bold:true,color:{argb:'FFFFFFFF'}};ws.getCell(r,1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF26384F'}};r++;let notes=$('notes').value.split('\n').filter(x=>x.trim());for(let item of notes){ws.mergeCells(r,1,r,9);ws.getCell(r,1).value=item;ws.getCell(r,1).alignment={wrapText:true};ws.getRow(r).height=Math.min(90,Math.max(25,Math.ceil(item.length/100)*17));r++}r+=3;ws.mergeCells(r,1,r,9);ws.getCell(r,1).value='Ako se u roku od 24 sata nakon predaje i u pisanom obliku ne podnesu prigovori, smatra se da je izvještaj prihvaćen.';ws.getCell(r,1).alignment={wrapText:true};ws.getCell(r,1).font={size:9,italic:true};ws.getRow(r).height=28;let buff=await wb.xlsx.writeBuffer();let blob=new Blob([buff],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='CTBA_Dnevni_izvjestaj_'+($('date').value.replace(/\./g,'-')||'novi')+'.xlsx';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);$('status').textContent='Excel izvještaj je generisan. Potraži ga u preuzetim datotekama.';}catch(e){$('status').textContent='Greška: '+e.message}};
 
+const originalCols=[12.8,13.1,13.1,14.1,12.4,11.3,12.0,11.7,11.7];
+function reportData(){
+ const text=$('src').value, lines=$('works').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+ const cleanlines=lines.filter(s=>!/^(?:BAJKMONT\s*[–-]\s*VERTIV|(?:\d{1,2}[.\/-]){2}20\d{2}\.?|(?:\d{1,2}:\d\d\s*[–-]\s*\d{1,2}:\d\d)|\d+\s+(?:radnika|radnik|poslovođ[aeu]|poslovodj[aeu]))$/i.test(s));
+ return {date:$('date').value,workers:Number($('workers').value)||0,supervisors:Number($('supervisors').value)||0,total:Number($('total').value)||0,
+ works:cleanlines,notes:$('notes').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean),
+ time:(text.match(/(\d{2}:\d{2})\s*[–-]\s*(\d{2}:\d{2})/)||[]).slice(1)};
+}
+function saveFile(blob,name){const a=document.createElement('a'),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),7000)}
+function setCell(s,at,value){s.getCell(at).value=value}
+function setMerged(ws,ref){if(!ws._merges || !ws._merges[ref]){try{ws.mergeCells(ref)}catch(e){}}}
+function populateOriginal(ws,d){
+ setCell(ws,'G4',d.date);setCell(ws,'C6',d.total);setCell(ws,'C10',d.supervisors);setCell(ws,'C11',d.workers);setCell(ws,'C12',d.total);
+ for(let n=13;n<=50;n++){ws.getCell('A'+n).value=null;}
+ for(let n=52;n<=58;n++){ws.getCell('A'+n).value=null;}
+ if(d.works.length>38)throw Error('U izvještaju ima '+d.works.length+' redova radova, a originalni CTBA obrazac ima mjesta za 38. Skrati tekst ili podijeli izvještaj.');
+ if(d.notes.length>7)throw Error('U bilješci ima '+d.notes.length+' redova, a originalni obrazac ima mjesta za 7. Skrati ili spoji redove.');
+ d.works.forEach((t,i)=>setCell(ws,'A'+(13+i),t));
+ d.notes.forEach((t,i)=>setCell(ws,'A'+(52+i),t));
+}
+function buildSameLayout(wb){
+ const ws=wb.addWorksheet('Dnevni izvještaj',{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:1}});
+ ws.columns=originalCols.map(width=>({width}));
+ ws.getColumn(1).width=17;
+ for(let row=1;row<=60;row++)ws.getRow(row).height=(row===1?87:row===2?27:row===3?20:row>=13&&row<=50?19:row===59?33:row===60?18:20);
+ ws.getRow(6).height=25;ws.getRow(7).height=25;ws.getRow(8).height=25;
+ const merges=['A2:I2','A3:I3','A4:B4','C4:E4','G4:I4','A5:B5','C5:E5','F5:G5','H5:I5','A6:B8','C6:E8','F6:G6','F7:G8','H6:I6','H7:I8','A9:B9','C9:E9','F9:G9','H9:I9','A10:B10','C10:E10','F10:G10','H10:I10','A11:B11','C11:E11','F11:G11','H11:I11','A12:B12','C12:E12','F12:G12','H12:I12','A60:I60','A59:I59'];
+ for(let n=13;n<=58;n++)merges.push('A'+n+':I'+n);
+ merges.forEach(m=>ws.mergeCells(m));
+ // Black outline and ruled work rows, matching the uploaded CTBA sheet.
+ for(let row=1;row<=60;row++){for(let col=1;col<=9;col++){
+   let cell=ws.getCell(row,col);
+   cell.font={name:'Arial',size:10,color:{argb:'FF000000'}};
+   cell.alignment={vertical:'middle',horizontal:'left',wrapText:false};
+ }}
+ const border={style:'thin',color:{argb:'FF000000'}};
+ for(let row=2;row<=60;row++){
+   for(let col=1;col<=9;col++){
+     const cell=ws.getCell(row,col);
+     if(row<=12)cell.border={top:border,bottom:border,left:border,right:border};
+     else cell.border={bottom:border,...(col===1?{left:border}:{}),...(col===9?{right:border}:{})};
+   }
+ }
+ ws.mergeCells('A1:C1');ws.mergeCells('D1:I1');
+ ws.getCell('A1').value='CONSTRUCTION';ws.getCell('A1').alignment={vertical:'bottom',horizontal:'center'};
+ ws.getCell('A1').font={name:'Arial',size:19,bold:true};
+ ws.getCell('A1').border={bottom:border,left:border,right:border};
+ ws.getCell('D1').border={bottom:border,right:border};
+ const labels={'A2':'DNEVNI IZVJEŠTAJ','A3':'Ime projekta:  ANAN Afula, VERTIV','A4':'Izvođač:','C4':'CTBA Construction d.o.o.','F4':'Date:','A5':'Lokacija:','C5':'Dugoselska ul. 21, 10370, Rugvica','H5':'Poslovođa:','H6':'Stefan Jonić','A6':'Ukupan broj radnika','A9':'Djelatnici','C9':'Ukupno','F9':'Dnevni rad','H9':'Noćni rad','A10':'Nadzor','A11':'Radnik','A12':'Ukupno','F10':7/24,'F11':17/24,'A51':'Bilješka:','A59':'Ako se u roku od 24 sata nakon predaje i u pisanom obliku ne podnesu prigovori na ovo izvješće, tada se njegov sadržaj smatra prihvaćenim i odobrenim.','A60':'BROJ STRANICE'};
+ // A51 is already merged.
+ for(const [k,v] of Object.entries(labels))setCell(ws,k,v);
+ ws.getCell('F10').numFmt='h:mm';ws.getCell('F11').numFmt='h:mm';
+ ws.getCell('A2').font={name:'Arial',size:19,bold:true};ws.getCell('A2').alignment={horizontal:'center',vertical:'middle'};
+ ws.getCell('A3').font={name:'Arial',size:11,bold:true,italic:true};ws.getCell('A3').alignment={horizontal:'center'};
+ for(const key of ['A4','A5','A6','A9','C9','F9','H9','H5','A12'])ws.getCell(key).font={name:'Arial',size:10,bold:true};
+ for(const key of ['A4','A5','A6','A9','C9','F9','H9','H5','C4','C5','H6','A10','A11','A12','F10','F11'])ws.getCell(key).alignment={horizontal:'center',vertical:'middle',wrapText:true};
+ ws.getCell('A59').font={name:'Arial',size:8,bold:true,italic:true};
+ ws.getCell('A59').alignment={horizontal:'center',vertical:'middle',wrapText:true};
+ ws.getCell('A60').font={name:'Arial',size:10,bold:true,italic:true};
+ ws.getCell('A51').font={name:'Arial',size:10};
+ ws.getCell('C6').alignment={horizontal:'center',vertical:'middle'};
+ ws.getCell('G4').alignment={horizontal:'center',vertical:'middle'};
+ ws.pageSetup.printArea='A1:I60';
+ return ws;
+}
+let originalTemplateBytes=null;
+$('templateFile').addEventListener('change',async function(){
+ try{originalTemplateBytes=await this.files[0].arrayBuffer();$('status').textContent='Originalni CTBA obrazac učitan. Excel će zadržati njegov izgled.';}catch(e){$('status').textContent='Neuspješno učitavanje obrasca: '+e.message;}
+});
+$('download').onclick=async()=>{
+ try{
+  if(!window.ExcelJS)throw Error('Excel biblioteka nije učitana.');
+  if(!$('works').value.trim() && !$('notes').value.trim())parse();
+  const d=reportData(),wb=new ExcelJS.Workbook();
+  if(originalTemplateBytes){await wb.xlsx.load(originalTemplateBytes.slice(0));}
+  const ws=originalTemplateBytes?wb.worksheets[0]:buildSameLayout(wb);
+  populateOriginal(ws,d);
+  let arr=await wb.xlsx.writeBuffer();
+  saveFile(new Blob([arr],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}),'CTBA_Dnevni_izvjestaj_'+(d.date.replace(/\./g,'-')||'novi')+'.xlsx');
+  $('status').textContent='Excel izvještaj generisan u CTBA rasporedu.';
+ }catch(e){$('status').textContent='Greška: '+e.message;}
+};
 $('downloadPdf').onclick=async()=>{
   try{
     if(!window.html2pdf)throw Error('PDF biblioteka nije učitana. Provjeri internetsku vezu.');
