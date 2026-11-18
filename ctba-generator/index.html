@@ -26,12 +26,12 @@ $('downloadPdf').onclick=async()=>{
       '<div style="background:#26384f;color:#fff;font-weight:bold;padding:10px;margin-top:12px;break-after:avoid">OPIS IZVEDENIH RADOVA</div>'+lines(works)+
       '<div style="background:#26384f;color:#fff;font-weight:bold;padding:10px;margin-top:20px;break-after:avoid">BILJEŠKA / VTR</div>'+lines(notes)+
       '<p style="font-size:10px;color:#526171;margin-top:35px;line-height:1.5">Ako se u roku od 24 sata nakon predaje i u pisanom obliku ne podnesu prigovori, smatra se da je izvještaj prihvaćen.</p>';
-    paper.style.position='fixed';paper.style.left='-10000px';paper.style.top='0';document.body.appendChild(paper);
+    const previewLayer=document.createElement('div');previewLayer.style.cssText='position:fixed;inset:0;z-index:99999;background:#e6e6e6;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:8px;';paper.style.cssText+='position:relative;left:auto;top:auto;margin:0 auto;max-width:100%;';previewLayer.appendChild(paper);document.body.appendChild(previewLayer);
     try{
       $('status').textContent='Izrađujem PDF dokument...';
       await html2pdf().set({margin:5,filename:'CTBA_Dnevni_izvjestaj_'+($('date').value.replace(/\./g,'-')||'novi')+'.pdf',image:{type:'jpeg',quality:0.97},html2canvas:{scale:2,scrollY:0,windowWidth:1024},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(paper).save();
       $('status').textContent='PDF dokument je generisan. Potraži ga u preuzetim datotekama.';
-    }finally{paper.remove();}
+    }finally{previewLayer.remove();}
   }catch(e){$('status').textContent='Greška pri izradi PDF-a: '+e.message;}
 };
 </script></body></html>
