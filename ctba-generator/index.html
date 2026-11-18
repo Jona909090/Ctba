@@ -10,8 +10,8 @@ $('downloadPdf').onclick=async()=>{
     if(!window.html2pdf)throw Error('PDF biblioteka nije učitana. Provjeri internetsku vezu.');
     if(!$('works').value.trim() && !$('notes').value.trim())parse();
     const clean = v=>String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    const works=$('works').value.split('\\n').filter(x=>x.trim());
-    const notes=$('notes').value.split('\\n').filter(x=>x.trim());
+    const works=$('works').value.split('\n').filter(x=>x.trim());
+    const notes=$('notes').value.split('\n').filter(x=>x.trim());
     const lines=arr=>arr.length?arr.map(x=>'<div style="border-bottom:1px solid #dae1e9;padding:7px 2px;line-height:1.35;break-inside:avoid;page-break-inside:avoid">'+clean(x)+'</div>').join(''):'<div style="height:24px;border-bottom:1px solid #dae1e9"></div>';
     const paper=document.createElement('div');
     paper.style.cssText='width:190mm;box-sizing:border-box;background:white;color:#1d293a;font:12px Arial,sans-serif;padding:10mm;';
@@ -29,7 +29,7 @@ $('downloadPdf').onclick=async()=>{
     paper.style.position='fixed';paper.style.left='-10000px';paper.style.top='0';document.body.appendChild(paper);
     try{
       $('status').textContent='Izrađujem PDF dokument...';
-      await html2pdf().set({margin:5,filename:'CTBA_Dnevni_izvjestaj_'+($('date').value.replace(/\\./g,'-')||'novi')+'.pdf',image:{type:'jpeg',quality:0.97},html2canvas:{scale:2,scrollY:0,windowWidth:1024},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(paper).save();
+      await html2pdf().set({margin:5,filename:'CTBA_Dnevni_izvjestaj_'+($('date').value.replace(/\./g,'-')||'novi')+'.pdf',image:{type:'jpeg',quality:0.97},html2canvas:{scale:2,scrollY:0,windowWidth:1024},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(paper).save();
       $('status').textContent='PDF dokument je generisan. Potraži ga u preuzetim datotekama.';
     }finally{paper.remove();}
   }catch(e){$('status').textContent='Greška pri izradi PDF-a: '+e.message;}
